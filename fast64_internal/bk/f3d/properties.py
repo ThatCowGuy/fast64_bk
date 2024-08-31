@@ -3,8 +3,8 @@ import bpy
 from bpy.types import PropertyGroup, Object, World, Material, UILayout
 from bpy.props import PointerProperty, StringProperty, BoolProperty, EnumProperty, IntProperty, FloatProperty
 from bpy.utils import register_class, unregister_class
-from ...f3d.f3d_material import update_world_default_rendermode
-from ...f3d.f3d_parser import ootEnumDrawLayers
+# from ...f3d.f3d_material import update_world_default_rendermode
+# from ...f3d.f3d_parser import ootEnumDrawLayers
 from ...utility import prop_split
 
 

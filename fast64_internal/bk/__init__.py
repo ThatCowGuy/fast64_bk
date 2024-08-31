@@ -17,10 +17,10 @@ from bpy.utils import register_class, unregister_class
 # from .actor.operators import actor_ops_register, actor_ops_unregister
 # from .actor.properties import actor_props_register, actor_props_unregister
 
-# from .f3d.operators import f3d_ops_register, f3d_ops_unregister
+from .f3d.operators import f3d_ops_register, f3d_ops_unregister
 # from .f3d.properties import OOTDLExportSettings, OOTDLImportSettings, f3d_props_register, f3d_props_unregister
 from .f3d.properties import BK_DLExportSettings, BK_DLImportSettings, f3d_props_register, f3d_props_unregister
-# from .f3d.panels import f3d_panels_register, f3d_panels_unregister
+from .f3d.panels import f3d_panels_register, f3d_panels_unregister
 
 # from .collision.operators import collision_ops_register, collision_ops_unregister
 # from .collision.properties import collision_props_register, collision_props_unregister
@@ -95,7 +95,7 @@ def bk_panel_register():
     # oot_operator_panel_register()
     # cutscene_panels_register()
     # scene_panels_register()
-    # f3d_panels_register()
+    f3d_panels_register()
     # collision_panels_register()
     # oot_obj_panel_register()
     # spline_panels_register()
@@ -111,7 +111,7 @@ def bk_panel_unregister():
     # oot_obj_panel_unregister()
     # scene_panels_unregister()
     # spline_panels_unregister()
-    # f3d_panels_unregister()
+    f3d_panels_unregister()
     # anim_panels_unregister()
     # skeleton_panels_unregister()
     pass
@@ -136,7 +136,7 @@ def bk_register(registerPanels):
     # skeleton_ops_register()
     # skeleton_props_register()
     # cutscene_ops_register()
-    # f3d_ops_register()
+    f3d_ops_register()
     # file_register()
 
     for cls in bk_classes:
@@ -168,7 +168,7 @@ def bk_unregister(unregisterPanels):
     # skeleton_ops_unregister()
     # skeleton_props_unregister()
     # cutscene_ops_unregister()
-    # f3d_ops_unregister()
+    f3d_ops_unregister()
     # file_unregister()
     # anim_props_unregister()
 
