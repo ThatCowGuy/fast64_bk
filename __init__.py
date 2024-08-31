@@ -26,6 +26,8 @@ from .fast64_internal.utility_anim import utility_anim_register, utility_anim_un
 
 from .fast64_internal.mk64 import MK64_Properties, mk64_register, mk64_unregister
 
+from .fast64_internal.bk import BK_Properties, bk_register, bk_unregister
+
 from .fast64_internal.f3d.f3d_material import (
     F3D_MAT_CUR_VERSION,
     mat_register,
@@ -69,6 +71,7 @@ gameEditorEnum = (
     ("OOT", "OOT", "Ocarina Of Time", 1),
     ("MK64", "MK64", "Mario Kart 64", 3),
     ("Homebrew", "Homebrew", "Homebrew", 2),
+    ("BK", "BK", "Banjo-Kazooie", 4),
 )
 
 
@@ -222,6 +225,7 @@ class Fast64_Properties(bpy.types.PropertyGroup):
     sm64: bpy.props.PointerProperty(type=SM64_Properties, name="SM64 Properties")
     oot: bpy.props.PointerProperty(type=OOT_Properties, name="OOT Properties")
     mk64: bpy.props.PointerProperty(type=MK64_Properties, name="MK64 Properties")
+    bk: bpy.props.PointerProperty(type=BK_Properties, name="BK Properties")
     settings: bpy.props.PointerProperty(type=Fast64Settings_Properties, name="Fast64 Settings")
     renderSettings: bpy.props.PointerProperty(type=Fast64RenderSettings_Properties, name="Fast64 Render Settings")
 
@@ -375,6 +379,9 @@ def gameEditorUpdate(self, context):
         world_defaults = oot_world_defaults
     elif self.gameEditorMode == "MK64":
         self.f3d_type = "F3DEX/LX"
+    elif self.gameEditorMode == "BK":
+        self.f3d_type = "F3DEX/LX"
+        world_defaults = {}  # This will set some pretty bad defaults, but trust the user
     elif self.gameEditorMode == "Homebrew":
         self.f3d_type = "F3D"
         world_defaults = {}  # This will set some pretty bad defaults, but trust the user
@@ -410,6 +417,7 @@ def register():
     sm64_register(True)
     oot_register(True)
     mk64_register(True)
+    bk_register(True)
 
     repo_settings_operators_register()
 
@@ -457,6 +465,7 @@ def unregister():
     sm64_unregister(True)
     oot_unregister(True)
     mk64_unregister(True)
+    bk_unregister(True)
     mat_unregister()
     bsdf_conv_unregister()
     bsdf_conv_panel_unregsiter()
