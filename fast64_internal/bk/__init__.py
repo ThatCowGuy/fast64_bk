@@ -19,7 +19,7 @@ from bpy.utils import register_class, unregister_class
 
 from .f3d.operators import f3d_ops_register, f3d_ops_unregister
 # from .f3d.properties import OOTDLExportSettings, OOTDLImportSettings, f3d_props_register, f3d_props_unregister
-from .f3d.properties import BK_DLExportSettings, BK_DLImportSettings, f3d_props_register, f3d_props_unregister
+from .f3d.properties import BK_Import_Settings, BK_Export_Settings, f3d_props_register, f3d_props_unregister
 from .f3d.panels import f3d_panels_register, f3d_panels_unregister
 
 # from .collision.operators import collision_ops_register, collision_ops_unregister
@@ -79,8 +79,8 @@ class BK_Properties(bpy.types.PropertyGroup):
 
     version: bpy.props.IntProperty(name="BK_Properties Version", default=0)
     
-    DLExportSettings: bpy.props.PointerProperty(type=BK_DLExportSettings)
-    DLImportSettings: bpy.props.PointerProperty(type=BK_DLImportSettings)
+    DLExportSettings: bpy.props.PointerProperty(type=BK_Export_Settings)
+    DLImportSettings: bpy.props.PointerProperty(type=BK_Import_Settings)
     
     # collisionExportSettings: bpy.props.PointerProperty(type=BK_CollisionExportSettings)
 

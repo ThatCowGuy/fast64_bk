@@ -5,8 +5,8 @@ from ...panels import BK_Panel
 from ...utility import prop_split
 from .operators import BK_ImportDL, BK_ExportDL
 from .properties import (
-    BK_DLExportSettings,
-    BK_DLImportSettings,
+    BK_Export_Settings,
+    BK_Import_Settings,
 )
 
 
@@ -108,7 +108,7 @@ class BK_ImportExportPanel(BK_Panel):
         col = layout.column()
 
         # import
-        importSettings: BK_DLImportSettings = context.scene.fast64.bk.DLImportSettings
+        importSettings: BK_Import_Settings = context.scene.fast64.bk.DLImportSettings
         importSettings.draw_props(col)
         col.operator(BK_ImportDL.bl_idname)
 
@@ -117,7 +117,7 @@ class BK_ImportExportPanel(BK_Panel):
         layout.split()
         col = layout.column()
 
-        exportSettings: BK_DLExportSettings = context.scene.fast64.bk.DLExportSettings
+        exportSettings: BK_Export_Settings = context.scene.fast64.bk.DLExportSettings
         exportSettings.draw_props(col)
         col.operator(BK_ExportDL.bl_idname)
 

@@ -6,7 +6,7 @@ import os
 
 
 
-class BINjo_ModelBIN_Handler:
+class ModelBIN_Handler:
 
     def __init__(self, rom_filename=None):
         self.ROM_name = rom_filename
