@@ -6,6 +6,7 @@ import sys
 import os.path
 
 from . import binjo_model_LU
+# from .. import bk_constants
 from . binjo_dicts import Dicts
 
 from timeit import default_timer as timer
@@ -580,20 +581,20 @@ def tri_intersects_cube(tri, cube):
 # files only start at this offset within the
 extra_file_offset = 0x10CD0
 
-def extract_model(data, filename):
-    if (filename not in binjo_model_LU.map_model_lookup):
-        print(f"Model Filename \"{filename}\" is not part of the LU in \"binjo_model_LU.py\" !")
-        print(f"Cancelling extraction...")
-        return None
-    PT_Address = binjo_model_LU.map_model_lookup[filename][1]
+def extract_model(data, model_index):
+    # if (filename not in binjo_model_LU.map_model_lookup):
+    #     print(f"Model Filename \"{filename}\" is not part of the LU in \"binjo_model_LU.py\" !")
+    #     print(f"Cancelling extraction...")
+    #     return None
+    PT_Address = binjo_model_LU.map_model_lookup[model_index][1]
     model_start_address = read_bytes(data, PT_Address + 0x00, 4) + extra_file_offset
     model_end_address   = read_bytes(data, PT_Address + 0x08, 4) + extra_file_offset
     if (model_start_address == model_end_address):
-        print(f"Model Filename \"{filename}\" doesn't contain any Data !")
+        print(f"Model Index \"{model_index}\" doesn't contain any Data !")
         print(f"Cancelling...")
         return None
 
-    print(f"Model Filename:\t\t{filename}")
+    print(f"Model Index:\t\t{model_index}")
     print(f"Pointer-Table:\t\t{to_decal_hex(PT_Address, 4)}")
     print(f"Model Start Adress:\t{to_decal_hex(model_start_address, 4)}")
     print(f"Model End Adress:\t{to_decal_hex(model_end_address, 4)}")
@@ -626,7 +627,7 @@ def extract_model(data, filename):
 
     return model_file
 
-def get_model_file(model_name, rom_path=None, asset_dir=None):
+def get_model_file(model_index, rom_path=None, asset_dir=None):
     # sanity check
     if (rom_path is None and asset_dir is None):
         print(f"Neither a rom_path nor an asset_dir were supplied !")
@@ -634,11 +635,11 @@ def get_model_file(model_name, rom_path=None, asset_dir=None):
         return None
 
     # first, get the default file_name according to the address of the compressed-file pointer
-    if (model_name not in binjo_model_LU.map_model_lookup):
-        print(f"Model Name \"{model_name}\" is not part of the LU in \"binjo_model_LU.py\" !")
-        print(f"Cancelling extraction...")
-        return None
-    PT_Address = binjo_model_LU.map_model_lookup[model_name][1]
+    # if (model_name not in binjo_model_LU.map_model_lookup):
+    #     print(f"Model Name \"{model_name}\" is not part of the LU in \"binjo_model_LU.py\" !")
+    #     print(f"Cancelling extraction...")
+    #     return None
+    PT_Address = binjo_model_LU.map_model_lookup[model_index][1]
     file_name = f"extracted_{to_decal_hex(PT_Address, 4)}.bin"
 
     # if an asset directory is given, check if the requested file was already extracted
@@ -661,7 +662,7 @@ def get_model_file(model_name, rom_path=None, asset_dir=None):
     file_path = os.path.join(asset_dir, file_name)
     with open(rom_path, mode="rb") as rom_file:
         rom_data = rom_file.read()
-    model_data = extract_model(rom_data, model_name)
+    model_data = extract_model(rom_data, model_index)
     if (model_data is None):
         print(f"Model extraction from ROM failed !")
         print(f"Cancelling extraction...")

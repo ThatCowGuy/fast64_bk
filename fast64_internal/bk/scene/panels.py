@@ -3,92 +3,59 @@ import os
 
 from bpy.types import UILayout
 from bpy.utils import register_class, unregister_class
-from ...panels import OOT_Panel
+
+from ...panels import BK_Panel
+
 from ..bk_constants import get_bk_EnumMapModelNames
-from ..oot_utility import getEnumName
-from .properties import (
-    OOTExportSceneSettingsProperty,
-    OOTImportSceneSettingsProperty,
-    OOTRemoveSceneSettingsProperty,
-    OOTBootupSceneOptions,
-)
 
 from .operators import (
-    OOT_ImportScene,
-    OOT_ExportScene,
-    OOT_RemoveScene,
-    OOT_ClearBootupScene,
-    OOT_SearchSceneEnumOperator,
+    BK_ImportScene,
+    BK_ExportScene,
+)
+from .properties import (
+    BK_ExportScene_Settings,
+    BK_ImportScene_Settings,
 )
 
 
-class OOT_ExportScenePanel(OOT_Panel):
-    bl_idname = "OOT_PT_export_level"
-    bl_label = "OOT Scene Exporter"
+class BK_ImportExportScenePanel(BK_Panel):
+    bl_idname = "BK_PT_export_scene"
+    bl_label = "BK Scene Importer / Exporter"
 
-    def drawSceneSearchOp(self, layout: UILayout, enumValue: str, opName: str):
-        searchBox = layout.box().row()
-        searchBox.operator(OOT_SearchSceneEnumOperator.bl_idname, icon="VIEWZOOM", text="").opName = opName
-        searchBox.label(text=getEnumName(ootEnumSceneID, enumValue))
+    # def drawSceneSearchOp(self, layout: UILayout, enumValue: str, opName: str):
+    #     searchBox = layout.box().row()
+    #     searchBox.operator(OOT_SearchSceneEnumOperator.bl_idname, icon="VIEWZOOM", text="").opName = opName
+    #     searchBox.label(text=getEnumName(ootEnumSceneID, enumValue))
 
     def draw(self, context):
+        # UI candy
         col = self.layout.column()
-
-        # Scene Exporter
         exportBox = col.box().column()
-        exportBox.label(text="Scene Exporter")
+        exportBox.label(text="Scene Importer / Exporter")
 
-        settings: OOTExportSceneSettingsProperty = context.scene.ootSceneExportSettings
-        if not settings.customExport:
-            self.drawSceneSearchOp(exportBox, settings.option, "Export")
-        settings.draw_props(exportBox)
+        # importer
+        importSettings: BK_ImportScene_Settings = context.scene.fast64.bk.SceneImportSettings
+        importSettings.draw_props(exportBox)
+        # import op
+        exportBox.operator(BK_ImportScene.bl_idname)
 
-        if context.scene.fast64.oot.hackerFeaturesEnabled:
-            hackerOoTBox = exportBox.box().column()
-            hackerOoTBox.label(text="HackerOoT Options")
-
-            bootOptions: OOTBootupSceneOptions = context.scene.fast64.oot.bootupSceneOptions
-            bootOptions.draw_props(hackerOoTBox)
-
-            hackerOoTBox.label(
-                text="Note: Scene boot config changes aren't detected by the make process.", icon="ERROR"
-            )
-            hackerOoTBox.operator(OOT_ClearBootupScene.bl_idname, text="Undo Boot To Scene (HackerOOT Repo)")
-
-        exportBox.operator(OOT_ExportScene.bl_idname)
-
-        # Scene Importer
-        importBox = col.box().column()
-        importBox.label(text="Scene Importer")
-
-        importSettings: OOTImportSceneSettingsProperty = context.scene.ootSceneImportSettings
-
-        if not importSettings.isCustomDest:
-            self.drawSceneSearchOp(importBox, importSettings.option, "Import")
-
-        importSettings.draw_props(importBox, importSettings.option)
-        importBox.operator(OOT_ImportScene.bl_idname)
-
-        # Remove Scene
-        removeBox = col.box().column()
-        removeBox.label(text="Remove Scene")
-
-        removeSettings: OOTRemoveSceneSettingsProperty = context.scene.ootSceneRemoveSettings
-        self.drawSceneSearchOp(removeBox, removeSettings.option, "Remove")
-        removeSettings.draw_props(removeBox)
-
-        removeRow = removeBox.row()
-        removeRow.operator(OOT_RemoveScene.bl_idname, text="Remove Scene")
+        # (starting a new col to get some space inbetween Import + Export)
+        exportBox.split()
+        exportBox.split()
+        # exporter
+        exportSettings: BK_ExportScene_Settings = context.scene.fast64.bk.SceneExportSettings
+        exportSettings.draw_props(exportBox)
+        exportBox.operator(BK_ExportScene.bl_idname)
 
 
-classes = (OOT_ExportScenePanel,)
 
+classes = (
+    BK_ImportExportScenePanel,
+)
 
 def scene_panels_register():
     for cls in classes:
         register_class(cls)
-
-
 def scene_panels_unregister():
     for cls in classes:
         unregister_class(cls)

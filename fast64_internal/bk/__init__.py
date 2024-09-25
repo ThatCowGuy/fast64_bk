@@ -1,9 +1,16 @@
 import bpy
 from bpy.utils import register_class, unregister_class
 
-# from .scene.operators import scene_ops_register, scene_ops_unregister
-# from .scene.properties import OOTBootupSceneOptions, scene_props_register, scene_props_unregister
-# from .scene.panels import scene_panels_register, scene_panels_unregister
+from .file_settings import file_register, file_unregister
+
+from .scene.operators import scene_ops_register, scene_ops_unregister
+from .scene.properties import (
+    BK_ImportScene_Settings, 
+    BK_ExportScene_Settings, 
+    scene_props_register,
+    scene_props_unregister
+)
+from .scene.panels import scene_panels_register, scene_panels_unregister
 
 # from .props_panel_main import oot_obj_panel_register, oot_obj_panel_unregister, oot_obj_register, oot_obj_unregister
 # from .skeleton.properties import OOTSkeletonImportSettings, OOTSkeletonExportSettings
@@ -17,10 +24,14 @@ from bpy.utils import register_class, unregister_class
 # from .actor.operators import actor_ops_register, actor_ops_unregister
 # from .actor.properties import actor_props_register, actor_props_unregister
 
-from .f3d.operators import f3d_ops_register, f3d_ops_unregister
-# from .f3d.properties import OOTDLExportSettings, OOTDLImportSettings, f3d_props_register, f3d_props_unregister
-from .f3d.properties import BK_Import_Settings, BK_Export_Settings, f3d_props_register, f3d_props_unregister
-from .f3d.panels import f3d_panels_register, f3d_panels_unregister
+# from .f3d.operators import f3d_ops_register, f3d_ops_unregister
+# from .f3d.properties import (
+#     BK_ImportScene_Settings, 
+#     BK_ExportScene_Settings, 
+#     f3d_props_register, 
+#     f3d_props_unregister,
+# )
+# from .f3d.panels import f3d_panels_register, f3d_panels_unregister
 
 # from .collision.operators import collision_ops_register, collision_ops_unregister
 # from .collision.properties import collision_props_register, collision_props_unregister
@@ -75,17 +86,11 @@ from .f3d.panels import f3d_panels_register, f3d_panels_unregister
 
 
 class BK_Properties(bpy.types.PropertyGroup):
-    """Global BK Scene Properties found under scene.fast64.bk"""
-
-    version: bpy.props.IntProperty(name="BK_Properties Version", default=0)
+    bk_version: bpy.props.IntProperty(name="BK_Properties Version", default=0)
     
-    DLExportSettings: bpy.props.PointerProperty(type=BK_Export_Settings)
-    DLImportSettings: bpy.props.PointerProperty(type=BK_Import_Settings)
+    SceneExportSettings: bpy.props.PointerProperty(type=BK_ExportScene_Settings)
+    SceneImportSettings: bpy.props.PointerProperty(type=BK_ImportScene_Settings)
     
-    # collisionExportSettings: bpy.props.PointerProperty(type=BK_CollisionExportSettings)
-
-    def get_extracted_path(self):
-        return "."
 
 
 
@@ -94,8 +99,8 @@ bk_classes = (BK_Properties, )
 def bk_panel_register():
     # oot_operator_panel_register()
     # cutscene_panels_register()
-    # scene_panels_register()
-    f3d_panels_register()
+    scene_panels_register()
+    # f3d_panels_register()
     # collision_panels_register()
     # oot_obj_panel_register()
     # spline_panels_register()
@@ -109,13 +114,12 @@ def bk_panel_unregister():
     # cutscene_panels_unregister()
     # collision_panels_unregister()
     # oot_obj_panel_unregister()
-    # scene_panels_unregister()
+    scene_panels_unregister()
     # spline_panels_unregister()
-    f3d_panels_unregister()
+    # f3d_panels_unregister()
     # anim_panels_unregister()
     # skeleton_panels_unregister()
     pass
-
 
 def bk_register(registerPanels):
     # oot_operator_register()
@@ -123,25 +127,24 @@ def bk_register(registerPanels):
     # collision_ops_register()  # register first, so panel goes above mat panel
     # collision_props_register()
     # cutscene_props_register()
-    # scene_ops_register()
-    # scene_props_register()
+    scene_ops_register()
+    scene_props_register()
     # room_ops_register()
     # room_props_register()
     # actor_ops_register()
     # actor_props_register()
     # oot_obj_register()
     # spline_props_register()
-    f3d_props_register()
+    # f3d_props_register()
     # anim_ops_register()
     # skeleton_ops_register()
     # skeleton_props_register()
     # cutscene_ops_register()
-    f3d_ops_register()
-    # file_register()
+    # f3d_ops_register()
+    file_register()
 
     for cls in bk_classes:
         register_class(cls)
-
     if registerPanels:
         bk_panel_register()
 
@@ -156,20 +159,20 @@ def bk_unregister(unregisterPanels):
     # collision_props_unregister()
     # oot_obj_unregister()
     # cutscene_props_unregister()
-    # scene_ops_unregister()
-    # scene_props_unregister()
+    scene_ops_unregister()
+    scene_props_unregister()
     # room_ops_unregister()
     # room_props_unregister()
     # actor_ops_unregister()
     # actor_props_unregister()
     # spline_props_unregister()
-    f3d_props_unregister()
+    # f3d_props_unregister()
     # anim_ops_unregister()
     # skeleton_ops_unregister()
     # skeleton_props_unregister()
     # cutscene_ops_unregister()
-    f3d_ops_unregister()
-    # file_unregister()
+    # f3d_ops_unregister()
+    file_unregister()
     # anim_props_unregister()
 
     # cutscene_preview_unregister()

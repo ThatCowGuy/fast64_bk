@@ -274,7 +274,7 @@ class DisplayList_Command:
         cmd |= binjo_utils.shift_cut(ULx, 44, 12)  # 3 nibbles
         cmd |= binjo_utils.shift_cut(ULy, 32, 12)  # 3 nibbles
         cmd |= binjo_utils.shift_cut(descriptor_idx, 24, 8)
-        W_transformed = 4 * (width - 1)
+        W_transformed = 4 * (width  - 1)
         H_transformed = 4 * (height - 1)
         cmd |= binjo_utils.shift_cut(W_transformed, 12, 12)  # 3 nibbles
         cmd |= binjo_utils.shift_cut(H_transformed, 0, 12)  # 3 nibbles

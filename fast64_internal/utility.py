@@ -1641,7 +1641,7 @@ def get_blender_to_game_scale(context):
             # TODO: (V5) create F3D game editor mode, utilize that scale
             return context.scene.blenderF3DScale
         case "BK":
-            return context.scene.fast64.bk.blender_to_bk_scale
+            return context.scene.bkBlenderScale
         case _:
             pass
     return context.scene.blenderF3DScale
